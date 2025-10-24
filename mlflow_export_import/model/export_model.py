@@ -23,6 +23,7 @@ from mlflow_export_import.common import utils, io_utils, model_utils
 from mlflow_export_import.common.timestamp_utils import adjust_timestamps
 from mlflow_export_import.common import MlflowExportImportException
 from mlflow_export_import.run.export_run import export_run
+from mlflow_export_import.logged_model.export_logged_model import export_logged_model
 
 _logger = utils.getLogger(__name__)
 
@@ -150,6 +151,14 @@ def _export_version(mlflow_client, vr, output_dir, aliases, output_versions, fai
             mlflow_client = mlflow_client,
             raise_exception = True
         )
+
+        if "models" in vr.source:
+            export_logged_model(
+                model_id = vr.source.split('models:/')[1],
+                output_dir = os.path.join(output_dir, vr.run_id),
+                mlflow_client=mlflow_client
+            )
+
         if not run and not opts.export_deleted_runs:
             failed_msg = { "message": "deleted run",  "version": vr_dct }
             failed_versions.append(failed_msg)

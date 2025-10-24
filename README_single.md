@@ -11,18 +11,19 @@ See sample JSON export files [here](README_export_format.md#sample-export-json-f
 
 ### Tools
 
-| MLflow Object | Documentation | Code |
-|-------|-------|---|
-| Registered Model | [export-model](#export-registered-model) | [code](mlflow_export_import/model/export_model.py) |
-|    | [import-model](#import-registered-model) | [code](mlflow_export_import/model/import_model.py) |
-| Model Version | [export-model-version](#export-model-version) | [code](mlflow_export_import/model_version/export_model_version.py) |
-|    | [import-model-version](#import-model-version) | [code](mlflow_export_import/model_version/import_model_version.py) |
-|    | [copy-model-version](README_copy.md#copy-model-version) | [code](mlflow_export_import/copy/copy_model_version.py) |
-| Experiment | [export-experiment](#export-experiment) | [code](mlflow_export_import/experiment/export_experiment.py) |
-|    | [import-experiment](#import-experiment) | [code](mlflow_export_import/experiment/import_experiment.py) |
-| Run | [export-run](#export-run) | [code](mlflow_export_import/run/export_run.py) |
-|  | [import-run](#import-run) | [code](mlflow_export_import/run/import_run.py) |
-|  | [copy-run](README_copy.md#copy-run) | [code](mlflow_export_import/copy/copy_run.py) |
+| MLflow Object    | Documentation                                           | Code                                                               |
+|------------------|---------------------------------------------------------|--------------------------------------------------------------------|
+| Registered Model | [export-model](#export-registered-model)                | [code](mlflow_export_import/model/export_model.py)                 |
+|                  | [import-model](#import-registered-model)                | [code](mlflow_export_import/model/import_model.py)                 |
+| Model Version    | [export-model-version](#export-model-version)           | [code](mlflow_export_import/model_version/export_model_version.py) |
+|                  | [import-model-version](#import-model-version)           | [code](mlflow_export_import/model_version/import_model_version.py) |
+|                  | [copy-model-version](README_copy.md#copy-model-version) | [code](mlflow_export_import/copy/copy_model_version.py)            |
+| Experiment       | [export-experiment](#export-experiment)                 | [code](mlflow_export_import/experiment/export_experiment.py)       |
+|                  | [import-experiment](#import-experiment)                 | [code](mlflow_export_import/experiment/import_experiment.py)       |
+| Run              | [export-run](#export-run)                               | [code](mlflow_export_import/run/export_run.py)                     |
+|                  | [import-run](#import-run)                               | [code](mlflow_export_import/run/import_run.py)                     |
+|                  | [copy-run](README_copy.md#copy-run)                     | [code](mlflow_export_import/copy/copy_run.py)                      |
+| Logged Model     | [export-logged-model](#export-logged-model)             | [code](mlflow_export_import/logged_model/export_logged_model.py)   |
 
 ## Experiment Tools
 
@@ -492,4 +493,25 @@ Options:
   --import-metadata BOOLEAN       Import registered model and experiment
                                   metadata (description and tags).  [default:
                                   False]
+```
+
+## Logged Models Tools
+
+### Export Logged Model
+Export a Logged Model to a directory. Accepts Logged model id
+
+#### Usage
+```
+ export-logged-model --help
+ 
+ Options:
+  --model-id TEXT    Logged Model ID.   [required]
+  --output-dir TEXT  Output directory.  [required] 
+```
+#### Example
+
+```
+export-logged-model \ 
+    --model-id m-c4302dcdcded475fa84a20988964a2aa \
+    --output-dir out
 ```

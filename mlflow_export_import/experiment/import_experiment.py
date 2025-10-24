@@ -82,7 +82,7 @@ def import_experiment(
         dst_run, src_parent_run_id = import_run(
             mlflow_client = mlflow_client,
             experiment_name = experiment_name,
-            input_dir = os.path.join(input_dir, src_run_id),
+            input_dir = os.path.join(input_dir, f'runs/{src_run_id}'),
             dst_notebook_dir = dst_notebook_dir,
             import_source_tags = import_source_tags,
             use_src_user_id = use_src_user_id

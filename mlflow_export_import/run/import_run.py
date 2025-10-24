@@ -142,7 +142,7 @@ def _upload_databricks_notebook(dbx_client, input_dir, src_run_dct, dst_notebook
 
 
 def _import_inputs(mlflow_client, src_run_dct, run_id):
-    inputs = src_run_dct.get("inputs", [])
+    inputs = src_run_dct.get("inputs", {}).get("dataset_inputs", [])
     if not inputs:
         return
     dataset_inputs = [DatasetInput(Dataset.from_dictionary(input['dataset']), [InputTag.from_dictionary(tag) for tag in input['tags']]) for input in inputs]

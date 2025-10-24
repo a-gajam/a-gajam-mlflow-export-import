@@ -148,6 +148,11 @@ def model_version_to_dict(version):
     for k,v in utils.strip_underscores(version).items():
         if k == "aliases": # type is google._upb._message.RepeatedScalarContainer
             dct[k] = [ str(x) for x in v ]
+        elif k == "deployment_job_state":
+            if hasattr(v, "__dict__"):
+                dct[k] = utils.strip_underscores(v)
+            else:
+                dct[k] = str(v)
         else:
             if k == "creation_time":  # Wot!
                 k = "creation_timestamp"

@@ -4,6 +4,8 @@ Exports an experiment to a directory.
 
 import os
 import click
+from packaging import version
+import mlflow
 
 from mlflow_export_import.common.click_options import (
     opt_experiment,
@@ -21,6 +23,7 @@ from mlflow_export_import.common import ws_permissions_utils
 from mlflow_export_import.common.timestamp_utils import fmt_ts_millis, utc_str_to_millis
 from mlflow_export_import.client.client_utils import create_mlflow_client, create_dbx_client
 from mlflow_export_import.run.export_run import export_run
+from mlflow_export_import.bulk import export_logged_models
 from . import nested_runs_utils
 
 _logger = utils.getLogger(__name__)
@@ -96,6 +99,18 @@ def export_experiment(
     exp_dct["tags"] = dict(sorted(exp_dct["tags"].items()))
 
     mlflow_attr = { "experiment": exp_dct , "runs": ok_run_ids }
+
+    if version.parse(mlflow.__version__) >= version.parse("3.0.0"):
+        ok_logged_models, failed_logged_models = export_logged_models.export_logged_models(
+            [exp.experiment_id],
+            os.path.join(output_dir, "logged_models"),
+            mlflow_client,
+
+        )
+        info_attr["ok_logged_models"] = len(ok_logged_models)
+        info_attr["failed_logged_models"] = len(failed_logged_models)
+        mlflow_attr["logged_models"] = ok_logged_models
+
     if export_permissions:
         mlflow_attr["permissions"] = ws_permissions_utils.get_experiment_permissions(dbx_client, exp.experiment_id)
     io_utils.write_export_file(output_dir, "experiment.json", __file__, mlflow_attr, info_attr)
@@ -127,7 +142,7 @@ def _export_run(mlflow_client, run, output_dir,
         return
     is_success = export_run(
         run_id = run.info.run_id,
-        output_dir = os.path.join(output_dir, run.info.run_id),
+        output_dir = os.path.join(output_dir, f'runs/{run.info.run_id}'),
         export_deleted_runs = export_deleted_runs,
         notebook_formats = notebook_formats,
         mlflow_client = mlflow_client
