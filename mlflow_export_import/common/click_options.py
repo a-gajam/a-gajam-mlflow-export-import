@@ -70,7 +70,7 @@ def opt_run_start_time(function):
     )(function)
     return function
 
-def opt_until(function):
+def opt_runs_until(function):
     function = click.option("--runs-until",
         help="Only export runs started before this UTC time (exclusive). Use with --run-start-time to define a time window. Format: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS.",
         type=str,

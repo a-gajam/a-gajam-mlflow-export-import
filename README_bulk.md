@@ -220,7 +220,7 @@ Options:
 ##### Export all models
 
 ```
-export-models --output-dir out
+export-models --output-dir out --models all
 ```
 
 ##### Export specified models
